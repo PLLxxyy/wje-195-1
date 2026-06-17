@@ -7,7 +7,15 @@ const ACTIVE_KEY = 'lucky_wheel_active_scheme';
 export function loadSchemes(): WheelScheme[] {
   try {
     const raw = localStorage.getItem(SCHEMES_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed: WheelScheme[] = JSON.parse(raw);
+    return parsed.map(scheme => ({
+      ...scheme,
+      options: scheme.options.map(opt => ({
+        ...opt,
+        remark: opt.remark ?? '',
+      })),
+    }));
   } catch {
     return [];
   }
@@ -20,7 +28,12 @@ export function saveSchemes(schemes: WheelScheme[]): void {
 export function loadHistory(): HistoryRecord[] {
   try {
     const raw = localStorage.getItem(HISTORY_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed: HistoryRecord[] = JSON.parse(raw);
+    return parsed.map(record => ({
+      ...record,
+      resultRemark: record.resultRemark ?? '',
+    }));
   } catch {
     return [];
   }
@@ -54,10 +67,10 @@ export function getDefaultColor(index: number): string {
 
 export function createDefaultScheme(): WheelScheme {
   const options: WheelScheme['options'] = [
-    { id: generateId(), text: '选项一', color: DEFAULT_COLORS[0] },
-    { id: generateId(), text: '选项二', color: DEFAULT_COLORS[1] },
-    { id: generateId(), text: '选项三', color: DEFAULT_COLORS[2] },
-    { id: generateId(), text: '选项四', color: DEFAULT_COLORS[3] },
+    { id: generateId(), text: '选项一', color: DEFAULT_COLORS[0], remark: '' },
+    { id: generateId(), text: '选项二', color: DEFAULT_COLORS[1], remark: '' },
+    { id: generateId(), text: '选项三', color: DEFAULT_COLORS[2], remark: '' },
+    { id: generateId(), text: '选项四', color: DEFAULT_COLORS[3], remark: '' },
   ];
   return {
     id: generateId(),

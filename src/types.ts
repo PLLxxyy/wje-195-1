@@ -2,6 +2,7 @@ export interface WheelOption {
   id: string;
   text: string;
   color: string;
+  remark: string;
 }
 
 export interface WheelScheme {
@@ -19,6 +20,7 @@ export interface HistoryRecord {
   schemeName: string;
   result: string;
   resultColor: string;
+  resultRemark: string;
   mode: DrawMode;
   timestamp: number;
 }

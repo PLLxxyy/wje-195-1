@@ -38,7 +38,12 @@ export default function HistoryPanel({ history, onClear }: Props) {
             }}
           >
             <div className="history-color" style={{ background: h.resultColor }} />
-            <div className="history-result">{h.result}</div>
+            <div className="history-content">
+              <div className="history-result">{h.result}</div>
+              {h.resultRemark && (
+                <div className="history-remark">{h.resultRemark}</div>
+              )}
+            </div>
             <div className="history-time">
               {formatTime(h.timestamp)}
             </div>

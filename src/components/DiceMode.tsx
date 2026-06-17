@@ -4,7 +4,7 @@ import { WheelOption } from '../types';
 interface Props {
   options: WheelOption[];
   spinning: boolean;
-  onResult: (text: string, color: string) => void;
+  onResult: (text: string, color: string, remark: string) => void;
   highlightOptionId: string | null;
 }
 
@@ -63,7 +63,7 @@ export default function DiceMode({ options, spinning, onResult, highlightOptionI
 
         timeoutRef.current = setTimeout(() => {
           setRolling(false);
-          onResult(options[winIdx].text, options[winIdx].color);
+          onResult(options[winIdx].text, options[winIdx].color, options[winIdx].remark);
         }, 400);
       }
     }, 100);

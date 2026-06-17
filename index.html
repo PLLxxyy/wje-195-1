@@ -219,15 +219,19 @@
         border-radius: 4px;
       }
 
+      .option-item-wrapper {
+        margin-bottom: 6px;
+      }
+
       .option-item {
         display: flex;
         align-items: center;
         gap: 8px;
         padding: 8px;
-        margin-bottom: 6px;
         background: rgba(255, 255, 255, 0.03);
-        border-radius: 8px;
+        border-radius: 8px 8px 0 0;
         border: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: none;
         transition: border-color 0.2s;
       }
 
@@ -238,6 +242,26 @@
       .option-item.dragging {
         opacity: 0.5;
         border-color: #e94560;
+      }
+
+      .option-remark-input {
+        width: 100%;
+        padding: 6px 10px 6px 52px;
+        border-radius: 0 0 8px 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: none;
+        background: rgba(255, 255, 255, 0.02);
+        color: #a0a8b8;
+        font-size: 12px;
+      }
+
+      .option-remark-input:focus {
+        outline: none;
+        border-color: #e94560;
+      }
+
+      .option-remark-input::placeholder {
+        color: #5a6a7a;
       }
 
       .color-dot {
@@ -410,6 +434,17 @@
         font-weight: 700;
         color: #f5a623;
         text-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
+        animation: resultPop 0.4s ease-out;
+      }
+
+      .result-remark {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #a0a8b8;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 8px 16px;
+        border-radius: 8px;
+        max-width: 400px;
         animation: resultPop 0.4s ease-out;
       }
 
@@ -648,10 +683,23 @@
         flex-shrink: 0;
       }
 
-      .history-result {
+      .history-content {
         flex: 1;
+        min-width: 0;
+      }
+
+      .history-result {
         font-weight: 600;
         font-size: 15px;
+      }
+
+      .history-remark {
+        margin-top: 2px;
+        font-size: 12px;
+        color: #8892a4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .history-time {

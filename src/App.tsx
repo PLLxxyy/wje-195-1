@@ -28,7 +28,7 @@ export default function App() {
   const [history, setHistory] = useState<HistoryRecord[]>([]);
   const [mode, setMode] = useState<DrawMode>('wheel');
   const [spinning, setSpinning] = useState(false);
-  const [result, setResult] = useState<{ text: string; color: string } | null>(null);
+  const [result, setResult] = useState<{ text: string; color: string; remark: string } | null>(null);
   const [rightTab, setRightTab] = useState<'history' | 'stats'>('history');
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveName, setSaveName] = useState('');
@@ -95,6 +95,7 @@ export default function App() {
       id: generateId(),
       text: `选项${idx + 1}`,
       color: getDefaultColor(idx),
+      remark: '',
     };
     updateScheme(s => ({ ...s, options: [...s.options, newOpt] }));
   }, [activeScheme, updateScheme]);
@@ -104,15 +105,15 @@ export default function App() {
     updateScheme(s => ({ ...s, options: s.options.filter(o => o.id !== optId) }));
   }, [activeScheme, updateScheme]);
 
-  const updateOption = useCallback((optId: string, field: 'text' | 'color', value: string) => {
+  const updateOption = useCallback((optId: string, field: 'text' | 'color' | 'remark', value: string) => {
     updateScheme(s => ({
       ...s,
       options: s.options.map(o => o.id === optId ? { ...o, [field]: value } : o),
     }));
   }, [updateScheme]);
 
-  const handleDrawResult = useCallback((text: string, color: string) => {
-    setResult({ text, color });
+  const handleDrawResult = useCallback((text: string, color: string, remark: string) => {
+    setResult({ text, color, remark });
     setSpinning(false);
     const record: HistoryRecord = {
       id: generateId(),
@@ -120,6 +121,7 @@ export default function App() {
       schemeName: activeScheme?.name || '未知',
       result: text,
       resultColor: color,
+      resultRemark: remark,
       mode,
       timestamp: Date.now(),
     };
@@ -148,7 +150,7 @@ export default function App() {
       ...activeScheme,
       id: generateId(),
       name: saveName.trim(),
-      options: activeScheme.options.map(o => ({ ...o, id: generateId() })),
+      options: activeScheme.options.map(o => ({ ...o, id: generateId(), remark: o.remark })),
     };
     setSchemes(prev => {
       const next = [...prev, newScheme];
@@ -275,7 +277,7 @@ export default function App() {
                 <WheelCanvas
                   options={activeScheme.options}
                   spinning={spinning}
-                  onResult={handleDrawResult}
+                  onResult={(text, color, remark) => handleDrawResult(text, color, remark)}
                   highlightOptionId={highlightId}
                 />
                 <button
@@ -292,8 +294,8 @@ export default function App() {
                 <DrawTube
                   options={activeScheme.options}
                   spinning={spinning}
-                  onResult={(text, color) => {
-                    handleDrawResult(text, color);
+                  onResult={(text, color, remark) => {
+                    handleDrawResult(text, color, remark);
                     const opt = activeScheme.options.find(o => o.text === text);
                     if (opt) setHighlightId(opt.id);
                   }}
@@ -312,8 +314,8 @@ export default function App() {
                 <DiceMode
                   options={activeScheme.options}
                   spinning={spinning}
-                  onResult={(text, color) => {
-                    handleDrawResult(text, color);
+                  onResult={(text, color, remark) => {
+                    handleDrawResult(text, color, remark);
                     const opt = activeScheme.options.find(o => o.text === text);
                     if (opt) setHighlightId(opt.id);
                   }}
@@ -332,9 +334,14 @@ export default function App() {
             {/* Result display */}
             <div className="result-display">
               {result && (
-                <div className="result-text" style={{ color: result.color }}>
-                  {result.text}
-                </div>
+                <>
+                  <div className="result-text" style={{ color: result.color }}>
+                    {result.text}
+                  </div>
+                  {result.remark && (
+                    <div className="result-remark">{result.remark}</div>
+                  )}
+                </>
               )}
             </div>
           </div>

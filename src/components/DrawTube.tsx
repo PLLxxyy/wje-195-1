@@ -4,7 +4,7 @@ import { WheelOption } from '../types';
 interface Props {
   options: WheelOption[];
   spinning: boolean;
-  onResult: (text: string, color: string) => void;
+  onResult: (text: string, color: string, remark: string) => void;
 }
 
 export default function DrawTube({ options, spinning, onResult }: Props) {
@@ -38,7 +38,7 @@ export default function DrawTube({ options, spinning, onResult }: Props) {
       setWinnerIdx(winIdx);
 
       timerRef.current = window.setTimeout(() => {
-        onResult(options[winIdx].text, options[winIdx].color);
+        onResult(options[winIdx].text, options[winIdx].color, options[winIdx].remark);
       }, 600);
     }, 1500);
 

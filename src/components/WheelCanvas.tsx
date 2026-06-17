@@ -4,7 +4,7 @@ import { WheelOption } from '../types';
 interface Props {
   options: WheelOption[];
   spinning: boolean;
-  onResult: (text: string, color: string) => void;
+  onResult: (text: string, color: string, remark: string) => void;
   highlightOptionId: string | null;
 }
 
@@ -196,7 +196,7 @@ export default function WheelCanvas({ options, spinning, onResult, highlightOpti
         // After rotation, the segment at top is determined by: (-angle) mod 2PI / sliceAngle
         let normalizedAngle = (-angleRef.current % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
         const resultIndex = Math.floor(normalizedAngle / sliceAngle) % count;
-        onResult(options[resultIndex].text, options[resultIndex].color);
+        onResult(options[resultIndex].text, options[resultIndex].color, options[resultIndex].remark);
       }
     };
 
